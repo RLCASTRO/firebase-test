@@ -1,39 +1,55 @@
 import { useState } from 'react';
-import { redirect, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import Home from './Home';
 
 const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log(e.target.email.value);
-    // console.log(e.target.password.value);
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const auth = getAuth();
+    try {
+      // console.log(e.target.email.value);
+      // console.log(e.target.password.value);
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      const auth = getAuth();
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      console.log(userCredential);
+
+      if (userCredential.user) {
         setIsLoggedIn(true);
-        // ...
-      })
-      .then(() => {
-        return (isLoggedIn) ? <><Home /> </>: console.log('error');
-        console.log(isLoggedIn);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+        navigate('/home');
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    }
 
-      
-  }
+    // signInWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
+    //     // Signed in
+    //     const user = userCredential.user;
+    //     console.log(user);
+    //     setIsLoggedIn(true);
+    //     // ...
+    //   })
+    //   .then(() => {
+    //     return (isLoggedIn) ? <Home /> : console.log('error');
+    //     console.log(isLoggedIn);
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //   });
+  };
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
