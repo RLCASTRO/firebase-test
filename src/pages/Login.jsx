@@ -26,7 +26,7 @@ const Login = ({ handleLogin }) => {
       if (userCredential.user) {
         handleLogin(true);
 
-        // navigate('/home');
+        navigate('/home');
       }
     } catch (error) {
       console.log(error);

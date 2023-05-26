@@ -1,10 +1,8 @@
+import { Navigate } from "react-router-dom";
 
-import React from 'react';
+const Home = ({ isLoggedIn }) => {
+  console.log('Home', isLoggedIn);
+  return isLoggedIn ? <div>Home</div> : <Navigate to="/" />;
+};
 
-const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
-
-export default Home
+export default Home;
