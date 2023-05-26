@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(e.target.email.value);
@@ -15,11 +18,13 @@ const Signup = () => {
         // Signed in
         const user = userCredential.user;
         console.log(user.email);
+        if (userCredential.user) {
+          navigate('/');
+        }
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        console.log(error);
         // ..
       });
   };

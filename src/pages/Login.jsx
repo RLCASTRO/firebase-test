@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-const Login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Login = ({ handleLogin }) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,12 +24,12 @@ const Login = () => {
       console.log(userCredential);
 
       if (userCredential.user) {
-        setIsLoggedIn(true);
-        navigate('/home');
+        handleLogin(true);
+
+        // navigate('/home');
       }
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      console.log(error);
     }
 
     // signInWithEmailAndPassword(auth, email, password)
@@ -93,14 +92,6 @@ const Login = () => {
                 >
                   Password
                 </label>
-                <div className='text-sm'>
-                  <a
-                    href='#'
-                    className='font-semibold text-indigo-600 hover:text-indigo-500'
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className='mt-2'>
                 <input
