@@ -21,7 +21,7 @@ const Login = ({ handleLogin }) => {
         password
       );
 
-      console.log(userCredential);
+      // console.log(userCredential);
 
       if (userCredential.user) {
         handleLogin(true);
@@ -32,22 +32,6 @@ const Login = ({ handleLogin }) => {
       console.log(error);
     }
 
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     // Signed in
-    //     const user = userCredential.user;
-    //     console.log(user);
-    //     setIsLoggedIn(true);
-    //     // ...
-    //   })
-    //   .then(() => {
-    //     return (isLoggedIn) ? <Home /> : console.log('error');
-    //     console.log(isLoggedIn);
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //   });
   };
   return (
     <>

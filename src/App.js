@@ -8,7 +8,7 @@ function App() {
   const [isLoggedIn, setIsloggedIn] = useState(false);
   
   useEffect(() => {
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
     // <Navigate to='/Home'/>
 
   }, [isLoggedIn])
