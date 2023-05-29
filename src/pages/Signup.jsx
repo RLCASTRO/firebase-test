@@ -19,7 +19,7 @@ const Signup = () => {
         const user = userCredential.user;
         console.log(user.email);
         if (userCredential.user) {
-          navigate('/');
+          navigate('/firebase-test');
         }
         // ...
       })
@@ -96,7 +96,7 @@ const Signup = () => {
           </form>
 
           <p className='mt-10 text-center text-sm text-gray-500'>
-            Already a member? <Link to='/'>Sign in</Link>
+            Already a member? <Link to='/firebase-test'>Sign in</Link>
           </p>
         </div>
       </div>

@@ -6,7 +6,7 @@ const Home = ({ isLoggedIn }) => {
   ? 
     <div>Home</div> 
   : 
-  <Navigate to="/" />;
+  <Navigate to="/firebase-test" />;
 };
 
 export default Home;

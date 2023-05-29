@@ -20,7 +20,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Login handleLogin={handleLogin}  />} />
+        <Route path='/firebase-test' element={<Login handleLogin={handleLogin}  />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/home' element={<Home isLoggedIn={isLoggedIn} />} />
       </Routes>
