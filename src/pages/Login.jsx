@@ -1,38 +1,10 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/FirebaseAuthContext';
 
-const Login = ({ handleLogin }) => {
-  const navigate = useNavigate();
+const Login = () => {
+  const { signOutFunc, handleSubmit } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      // console.log(e.target.email.value);
-      // console.log(e.target.password.value);
-      const email = e.target.email.value;
-      const password = e.target.password.value;
-      const auth = getAuth();
-
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // console.log(userCredential);
-
-      if (userCredential.user) {
-        handleLogin(true);
-
-        navigate('/home');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
-  };
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -92,12 +64,20 @@ const Login = ({ handleLogin }) => {
             <div>
               <button
                 type='submit'
-                className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                className=' border-2 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
               >
                 Sign in
               </button>
             </div>
           </form>
+          <div>
+            <button
+              className='border-2 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              onClick={signOutFunc}
+            >
+              Log out
+            </button>
+          </div>
 
           <p className='mt-10 text-center text-sm text-gray-500'>
             Not a member? <Link to='/signup'>Sign up</Link>
