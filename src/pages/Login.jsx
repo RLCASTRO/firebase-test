@@ -1,10 +1,31 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/FirebaseAuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserAuth } from '../context/FirebaseAuthContext';
 
 const Login = () => {
-  const { signOutFunc, handleSubmit } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { logout, login } = UserAuth();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      await login(email, password);
+      navigate('/home');
+    } catch (error) {
+      console.log(error.message);
+      navigate('/');
+    }
+  };
+
+  const logOutFunc = async () => {
+    try {
+      await logout();
+      console.log('logged out');
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -73,7 +94,7 @@ const Login = () => {
           <div>
             <button
               className='border-2 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-              onClick={signOutFunc}
+              onClick={logOutFunc}
             >
               Log out
             </button>

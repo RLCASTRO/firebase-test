@@ -1,63 +1,48 @@
-import { useState, useEffect, createContext } from 'react';
-import { getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useContext, useState, useEffect, createContext } from 'react';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
-export const AuthContext = createContext();
+const UserContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(false);
-  const auth = getAuth();
+
+export const AuthContextProvider = ({ children }) => {
+  const [user, setUser] = useState({});
+
+  const signup = async (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+
+  }
+  
+  const login = async (email, password) => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return userCredential;
+  };
+
+  const logout = () => {
+    return signOut(auth);
+  };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-        console.log('from auth provider ', user);
-        <Navigate to='home' replace={true}/>;
-      } else {
-        console.log('No user returned');
-      }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
+      setUser(currentUser);
+      return () => {
+        unsubscribe();
+      };
     });
-  }, [auth]);
-
-  const signOutFunc = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log('Sign-out successful');
-        console.log(auth.currentUser);
-        <Navigate to='/firebase-test' />;
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-        <Navigate to='/firebase-test' />;
-      });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const email = e.target.email.value;
-      const password = e.target.password.value;
-    //   const auth = getAuth();
-
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log('from handleSubmit', userCredential);
-      <Navigate to='/home' />;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, signOutFunc, handleSubmit, auth }}>
+    <UserContext.Provider value={{ user, logout, login, signup }}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
+};
+
+export const UserAuth = () => {
+  return useContext(UserContext);
 };

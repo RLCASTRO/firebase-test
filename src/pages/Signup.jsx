@@ -1,32 +1,22 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { UserAuth } from "../context/FirebaseAuthContext";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { signup } = UserAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(e.target.email.value);
-    // console.log(e.target.password.value);
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user.email);
-        if (userCredential.user) {
-          navigate('/firebase-test');
-        }
-        // ...
-      })
-      .catch((error) => {
-        console.log(error);
-        // ..
-      });
+    try {
+      await signup(email, password);
+      navigate('/');
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

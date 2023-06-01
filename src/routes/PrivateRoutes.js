@@ -1,17 +1,15 @@
-import { Outlet, Navigate } from "react-router-dom";
-import { AuthContext } from "../context/FirebaseAuthContext";
-import { useContext } from "react";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { UserAuth } from '../context/FirebaseAuthContext';
 
+export const PrivateRoutes = ({ children }) => {
+  const { user } = UserAuth();
+  console.log('from private route ', user);
 
-export const PrivateRoutes = () => {
-const { currentUser } = useContext(AuthContext)
-console.log('from private route ', currentUser )
+  if (!user) {
+    return <Navigate to='/' />;
+  }
+  return children;
+};
 
-
-    return (
-
-        (true) ? <Outlet /> : <Navigate to={'/firebase-test'} />
-        
-    )
-
-}
+export default PrivateRoutes;
